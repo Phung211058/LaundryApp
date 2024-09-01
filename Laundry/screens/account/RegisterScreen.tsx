@@ -57,38 +57,41 @@ const RegisterScreen: React.FC = () => {
                 <TextInput style={styles.input} placeholder="Email" onBlur={onBlur} onChangeText={onChange} value={value} />
             )} /> */}
             <Controller control={control} name='phoneNumber' rules={{
-                required: "Phone Number is required", minLength: {
+                required: "Phone Number is required",
+                minLength: {
                     value: 10,
-                    message: "Phone Number must be exactly 10 digits"
+                    message: "Phone Number is invalid",
                 },
                 maxLength: {
                     value: 10,
-                    message: "Phone Number must be exactly 10 digits"
+                    message: "Phone Number is invalid",
                 },
                 pattern: {
                     value: /^[0-9]{10}$/,
-                    message: "Phone Number must be exactly 10 digits"
-                }
+                    message: "Phone Number is invalid",
+                },
+                // required: "Phone Number is required",
             }} render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput style={styles.input} placeholder="Phone Number" onBlur={onBlur} onChangeText={onChange} value={value} keyboardType="phone-pad" />
             )} />
-            {errors.phoneNumber && <Text style={styles.errorText}>Phone number is required.</Text>}
+            {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>}
             <Controller control={control} name="password" rules={{
-                required: 'Password is required', pattern: {
+                required: 'Password is required', 
+                pattern: {
                     value: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
                     message: "Password must contain at least one uppercase letter and one number, and be at least 8 characters long"
                 }
             }} render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput style={styles.input} placeholder="Password" secureTextEntry onBlur={onBlur} onChangeText={onChange} value={value} />
             )} />
-            {errors.password && <Text style={styles.errorText}>Password is required.</Text>}
+            {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
             <Controller control={control} name="confirmPassword" rules={{
                 required: 'Confirm Password is required', validate: (value) => value === passworded || 'Passwords do not match',
             }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry onBlur={onBlur} onChangeText={onChange} value={value} />
                 )} />
-            {errors.confirmPassword && <Text style={styles.errorText}>Confirm password is required.</Text>}
+            {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
             <Button title="Register" onPress={handleSubmit(registerUser)} />
         </View>
     )

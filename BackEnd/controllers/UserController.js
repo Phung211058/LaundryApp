@@ -1,5 +1,5 @@
 const AccountModel = require('../models/AccountModel');
-const User = require('../models/User');
+const UserModel = require('../models/UserModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -28,7 +28,7 @@ exports.registerUser = async (req, res) => {
             password: hashedPassword,
         });
         await account.save();
-        const user = await UserModel({
+        const user = new UserModel({
             AccountId: account._id
         })
         await user.save();
