@@ -1,0 +1,14 @@
+CREATE EXPO APP: npx create-expo-app 'your app name'
+
+NAVIGATION: +) npx expo install @react-navigation/native
+                           +) npx expo install @react-navigation/stack
+                           +) npx expo install @react-native-screens react-native-safe-area-context
+                           +) npx expo install @react-navigation/bottom-tabs
+LINEAR GRADIENT: +) expo install react-native-linear-gradient
+REANIMATED CAROUSEL: +) yarn add react-native-reanimated-carousel / npm install react-native-reanimated-carousel
+                                                  +) yarn add react-native-gesture-handler / npm install react-native-gesture-handler
+USE DATE TIME: +) yarn add @react-native-community/datetimepicker / npm install @react-native-community/datetimepicker
+WORKING WITH BAKEND: +) npm install axios
+MANAGE FORM AND SEND REQUEST TO BACKEND: +) npm install react-hook-form axios
+
+

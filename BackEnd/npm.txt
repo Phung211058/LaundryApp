@@ -1,0 +1,2 @@
+ENCRYPTION: +) npm install bcrypt
+JWT TOKEN: +) npm install jsonwebtoken
