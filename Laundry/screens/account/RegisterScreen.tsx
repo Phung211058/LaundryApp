@@ -15,36 +15,16 @@ const RegisterScreen: React.FC = () => {
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
     const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<IFormRegisterData>();
     const registerUser = async (data: IFormRegisterData) => {
-        // try {
-        //     const formData = new FormData();
-        //     // formData.append('email', data.email);
-        //     formData.append('phoneNumber', data.phoneNumber);
-        //     formData.append('password', data.password);
-        //     if (data.password !== data.confirmPassword) {
-        //         Alert.alert('Error', 'Passwords do not match');
-        //         return;
-        //     }
-        //     const response = await axios.post('http://192.168.1.67:3000/api/register', formData, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data',
-        //         },
-        //     });
-
-        //     Alert.alert('Success', response.data.message);
-        //     reset(); // Reset form fields after successful registration
-        //     navigation.navigate("Login")
-        // }
         try {
             const response = await axios.post('http:/192.168.1.67:3000/api/register', {
                 phoneNumber: data.phoneNumber,
                 password: data.password,
             });
-
             Alert.alert('Success', response.data.message);
             reset(); // Reset form fields after successful registration
             navigation.navigate("Login");
         }
-        catch (error: unknown) {
+        catch (error) {
             const axiosError = error as { response?: { data?: { message?: string } } };
             Alert.alert('Error', axiosError.response?.data?.message || 'An unknown error occurred');
         }
@@ -58,25 +38,15 @@ const RegisterScreen: React.FC = () => {
             )} /> */}
             <Controller control={control} name='phoneNumber' rules={{
                 required: "Phone Number is required",
-                minLength: {
-                    value: 10,
-                    message: "Phone Number is invalid",
-                },
-                maxLength: {
-                    value: 10,
-                    message: "Phone Number is invalid",
-                },
-                pattern: {
-                    value: /^[0-9]{10}$/,
-                    message: "Phone Number is invalid",
-                },
-                // required: "Phone Number is required",
+                minLength: { value: 10, message: "Phone Number is invalid", },
+                maxLength: { value: 10, message: "Phone Number is invalid", },
+                pattern: { value: /^[0-9]{10}$/, message: "Phone Number is invalid", },
             }} render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput style={styles.input} placeholder="Phone Number" onBlur={onBlur} onChangeText={onChange} value={value} keyboardType="phone-pad" />
             )} />
             {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber.message}</Text>}
             <Controller control={control} name="password" rules={{
-                required: 'Password is required', 
+                required: 'Password is required',
                 pattern: {
                     value: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/,
                     message: "Password must contain at least one uppercase letter and one number, and be at least 8 characters long"
@@ -92,7 +62,10 @@ const RegisterScreen: React.FC = () => {
                     <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry onBlur={onBlur} onChangeText={onChange} value={value} />
                 )} />
             {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
-            <Button title="Register" onPress={handleSubmit(registerUser)} />
+            <View style={{ marginHorizontal: 45, marginTop: 5, paddingHorizontal: 10}}>
+                <Button title="Register" onPress={handleSubmit(registerUser)} />
+
+            </View>
         </View>
     )
 }

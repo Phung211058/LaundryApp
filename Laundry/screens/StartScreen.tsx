@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, View, Animated, Image, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Animated, Image, TouchableOpacity, Pressable } from 'react-native';
 import AppNavigation from '../navigation/navigation';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, NavigationProp  } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/types'; // Import kiểu
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -54,12 +54,15 @@ const StartScreen: React.FC = () => {
             />
           </View>
 
-          <TouchableOpacity style={{
+          <Pressable style={{
             backgroundColor: '#007bff', borderRadius: 100, paddingVertical: 10, marginHorizontal: 70, marginTop: 40,
-            elevation: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.3, shadowRadius: 6
+            // iOS shadow
+            shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.5, shadowRadius: 5,
+            // Android elevation
+            elevation: 5,
           }} onPress={() => navigation.navigate('Login')}>
-            <Text style={{ fontSize: 20, textAlign: "center", color: "#fff" }}>Get Start</Text>
-          </TouchableOpacity>
+            <Text style={{ fontSize: 20, textAlign: "center", color: "#fff", }}>Get Start</Text>
+          </Pressable>
         </View>
       </ScrollView>
     </SafeAreaView>

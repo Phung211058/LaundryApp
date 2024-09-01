@@ -48,16 +48,17 @@ exports.loginUser = async (req, res) => {
         phoneNumber,
         password
     } = req.body;
+    console.log(req.body)
     try {
         const account = await AccountModel.findOne({
             phoneNumber
         });
         if (!account) return res.status(404).json({
-            error: 'User not found'
+            message: 'User not found'
         });
-        const isMatch = await compare(password, account.password);
+        const isMatch = await bcrypt.compare(password, account.password);
         if (!isMatch) return res.status(400).json({
-            error: 'Invalid credentials'
+            message: 'Invalid credentials'
         });
         // const token = jwt.sign({
         //     id: account._id
