@@ -10,5 +10,9 @@ REANIMATED CAROUSEL: +) yarn add react-native-reanimated-carousel / npm install 
 USE DATE TIME: +) yarn add @react-native-community/datetimepicker / npm install @react-native-community/datetimepicker
 WORKING WITH BAKEND: +) npm install axios
 MANAGE FORM AND SEND REQUEST TO BACKEND: +) npm install react-hook-form axios
-
-
+PAPER: +) npm install react-native-paper
+DRAWER: +) npm install @react-navigation/native @react-navigation/drawer
+                    +) npm install react-native-screens react-native-safe-area-context
+POPUP-MENU: +) npm install react-native-popup-menu
+ELEMENTS: +) npm install react-native-elements
+ANIMATED MENU: +) 

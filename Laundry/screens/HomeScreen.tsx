@@ -1,22 +1,23 @@
-import { View, Text, ScrollView, Image, Dimensions, Pressable } from 'react-native'
+import { useState } from 'react';
+import { View, Text, ScrollView, Image, Dimensions, Pressable, Button, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Feather from '@expo/vector-icons/Feather';
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import Carousel from 'react-native-reanimated-carousel';
-import Fontisto from '@expo/vector-icons/Fontisto';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import {
+  Ionicons, AntDesign, FontAwesome5, Fontisto, SimpleLineIcons,
+  MaterialCommunityIcons, MaterialIcons, Feather
+} from '@expo/vector-icons/';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { RootStackParamList } from '../navigation/types'; // Import kiểu
+import { RootStackParamList } from '../navigation/types';
+import { Menu, Provider } from 'react-native-paper';
 
 // https://dribbble.com/shots/17990180--Find-Tailor-and-Dry-Cleaners-App
 const HomeScreen: React.FC = () => {
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
   const width = Dimensions.get('window').width;
+  const [visible, setVisible] = useState(false);
+
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
   const list = [
     { id: 1, title: 'First', image: 'https://th.bing.com/th?id=OIP.tLotgCDtzgTdwJcTiXWRCwHaEK&w=333&h=187&c=8&rs=1&qlt=90&o=6&dpr=1.6&pid=3.1&rm=2' },
     { id: 2, title: 'Second', image: 'https://dataconomy.com/wp-content/uploads/2022/10/NightCafe-AI-image-generator-7.jpg' },
@@ -88,26 +89,26 @@ const HomeScreen: React.FC = () => {
   ]
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "whitesmoke" }}>
-      <ScrollView>
-        <View style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 15 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 15 }}> */}
           {/* IconBar  */}
-          <View style={{ alignItems: "center", justifyContent: "center", height: 40, width: 40, }}>
+          {/* <View style={{ alignItems: "center", justifyContent: "center", height: 40, width: 40, }}>
             <SimpleLineIcons name="menu" size={26} color="black" />
-          </View>
+          </View> */}
           {/* Notificaiton and infor */}
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          {/* <View style={{ flexDirection: "row", justifyContent: "space-between" }}> */}
             {/* Notification */}
-            <View style={{ borderWidth: 0.6, borderRadius: 50, width: 45, height: 45, justifyContent: "center", alignItems: "center", marginRight: 15, marginTop: 3 }}>
+            {/* <View style={{ borderWidth: 0.6, borderRadius: 50, width: 45, height: 45, justifyContent: "center", alignItems: "center", marginRight: 15, marginTop: 3 }}>
               <Feather name="bell" size={28} color="black" style={{ color: "gray" }} />
-            </View>
+            </View> */}
             {/* Infor  */}
-            <View style={{ alignSelf: 'flex-start' }}>
+            {/* <View style={{ alignSelf: 'flex-start' }}>
               <Image source={require("../assets/mine.jpg")} style={{ width: 50, height: 50, borderRadius: 50 }} />
-            </View>
-          </View>
-        </View>
+            </View> */}
+          {/* </View> */}
+        {/* </View> */}
         {/* Slogan */}
-        <View style={{ marginHorizontal: 30, marginTop: 5 }}>
+        <View style={{ marginHorizontal: 30, marginTop: 15 }}>
           <Text style={{ fontSize: 18 }}>Hello Tom</Text>
           <Text style={{ fontSize: 28, fontWeight: "400" }}>Let's clean your clothes with phoenix  <FontAwesome5 name="phoenix-framework" size={28} color="coral" /></Text>
         </View>
@@ -129,7 +130,7 @@ const HomeScreen: React.FC = () => {
           <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
             {/* Soft Furniture*/}
             {services.map((service) => (
-              <View key={service.id} style={{flexDirection: "column", alignItems: 'center', marginHorizontal: 7, marginBottom: 15, width: "27%" }}>
+              <View key={service.id} style={{ flexDirection: "column", alignItems: 'center', marginHorizontal: 7, marginBottom: 15, width: "27%" }}>
                 <Pressable style={{ borderWidth: 0.5, borderRadius: 50, backgroundColor: service.backgroundColor, padding: 7, marginBottom: 10, }}
                   onPress={() => navigation.navigate("Service", { selectedService: service.name })}>
                   {service.icon}
@@ -171,7 +172,7 @@ const HomeScreen: React.FC = () => {
           </Pressable>
           <Pressable style={{ flexDirection: "row", padding: 10, }}>
             <AntDesign name="questioncircleo" size={24} color="black" />
-            <Text style={{ fontSize: 20, marginLeft: 12, }}>Help and feedback </Text>
+            <Text style={{ fontSize: 20, marginLeft: 12, }}>Privacy </Text>
           </Pressable>
           <Pressable style={{ flexDirection: "row", padding: 10, }}>
             <AntDesign name="questioncircleo" size={24} color="black" />
@@ -191,8 +192,8 @@ const HomeScreen: React.FC = () => {
           </Pressable>
         </View>
 
-      </ScrollView>
-    </SafeAreaView>
+      </ScrollView >
+    </SafeAreaView >
   )
 }
 
