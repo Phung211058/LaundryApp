@@ -2,6 +2,7 @@ import React from 'react'
 import { Pressable, Text, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AuthProvider } from '../screens/authentication/AuthContext'; // Đường dẫn đến file AuthContext
 import HomeScreen from '../screens/HomeScreen';
 import StartScreen from '../screens/StartScreen';
 import { RootStackParamList } from './/types';
@@ -11,7 +12,6 @@ import AddressScreen from '../screens/address/AddressScreen';
 import LoginScreen from '../screens/authentication/LoginScreen';
 import RegisterScreen from '../screens/authentication/RegisterScreen';
 import { Ionicons, Feather, FontAwesome5, AntDesign } from '@expo/vector-icons';
-// import Feather from '@expo/vector-icons/Feather';
 import ProfileScreen from '../screens/about/ProfileScreen';
 
 const BottomTab = createBottomTabNavigator();
@@ -100,23 +100,25 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigation: React.FC = () => {
   return (
-    <Stack.Navigator
-      initialRouteName='AppTabs'
-      screenOptions={{
-        headerStyle: { backgroundColor: 'skyblue' },
-        headerTitleStyle: { fontWeight: 'bold', fontSize: 20, color: '#fff' },
-      }}
-    >
-      {/* Màn hình không có BottomTabNavigator */}
-      <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Service" component={ServiceScreen} />
-      <Stack.Screen name="Business" component={BusinessScreen} />
+    <AuthProvider>
+      <Stack.Navigator
+        initialRouteName='Login'
+        screenOptions={{
+          headerStyle: { backgroundColor: 'skyblue' },
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 20, color: '#fff' },
+        }}
+      >
+        {/* Màn hình không có BottomTabNavigator */}
+        <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Service" component={ServiceScreen} />
+        <Stack.Screen name="Business" component={BusinessScreen} />
 
-      {/* Màn hình có BottomTabNavigator */}
-      <Stack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />
-    </Stack.Navigator>
+        {/* Màn hình có BottomTabNavigator */}
+        <Stack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </AuthProvider>
   );
 };
 

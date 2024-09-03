@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/types'; // Import kiểu
+import { useAuth } from '../authentication/AuthContext';
 
 interface IFromLoginData {
     phoneNumber: string,
@@ -13,12 +14,14 @@ interface IFromLoginData {
 const LoginScreen: React.FC = () => {
     const navigation: NavigationProp<RootStackParamList> = useNavigation();
     const { control, handleSubmit, formState: { errors } } = useForm<IFromLoginData>();
+    const { setAccountId } = useAuth();
 
     const loginUser = async (data: IFromLoginData) => {
         try {
             const response = await axios.post('http://192.168.1.67:3000/api/login', data); // Chỉnh sửa đường dẫn phù hợp với backend của bạn
             console.log('User logged in:', response.data);
-            navigation.navigate("Home")
+            setAccountId(response.data.accountId);
+            navigation.navigate("AppTabs")
         } catch (error) {
             // console.error('Error logging in:', error);
             const axiosError = error as { response?: { data?: { message?: string } } };
@@ -50,7 +53,7 @@ const LoginScreen: React.FC = () => {
             {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
             <Pressable style={{
                 marginHorizontal: 50, borderRadius: 18, marginBottom: 20, marginTop: 15,
-                paddingVertical: 5, justifyContent: "center", backgroundColor: "#007bff",     
+                paddingVertical: 5, justifyContent: "center", backgroundColor: "#007bff",
                 // iOS shadow
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 2 },
@@ -61,7 +64,7 @@ const LoginScreen: React.FC = () => {
             }} onPress={handleSubmit(loginUser)}>
                 <Text style={{ fontSize: 20, color: "#fff", textAlign: "center" }}>Login</Text>
             </Pressable>
-            <View style={{ justifyContent: "center", alignItems: "center",flexDirection: "row" }}>
+            <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row" }}>
                 <Pressable style={{
                     alignSelf: 'flex-start',
                 }} onPress={() => navigation.navigate("Register")}>

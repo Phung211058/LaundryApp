@@ -10,18 +10,5 @@ export type RootStackParamList = {
         selectedTime: string; selectedBusiness?: string, selectedService?: string};
     Finish: {selectedCategory?: string; selectedWeight?: string; selectedFlavour: string; 
         selectedTime: string; selectedBusiness?: string, selectedService?: string, address: object};
+    AppTabs: undefined;
 };
-
-// Dry: undefined | {selectedService: string};
-// LaundryIron: undefined | {selectedService: string};
-// Lengerie: undefined | {selectedService: string};
-// OdorTreatment: undefined | {selectedService: string};
-// SoftFurniture: undefined | {selectedService: string};
-// StainRemoval: undefined | {selectedService: string};
-// WashDry: undefined | {selectedService: string};
-// Wet: undefined | {selectedService: string}; 
-// declare global {
-//     namespace ReactNavigation {
-//         interface RootParamList extends RootStackParamList{}
-//     }
-// }

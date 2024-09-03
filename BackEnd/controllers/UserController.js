@@ -69,7 +69,10 @@ exports.loginUser = async (req, res) => {
         //     token,
         //     account
         // });
-        res.status(200).json({ message: 'Login successful' });
+        res.status(200).json({
+            message: 'Login successful',
+            accountId: account._id, 
+        });
     } catch (error) {
         res.status(500).json({
             error: error.message
@@ -98,48 +101,54 @@ exports.createUser = async (req, res) => {
     }
 };
 // get user
-exports.getUser = async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(404).json({
-            err: "user not found"
-        });
-        res.status(200).json({
-            user
-        });
-    } catch (err) {
-        res.status(500).json({
-            err: err.message
-        });
-    }
+exports.getUserByAccountId = async (req, res) => {
+        const accountId = req.params.accountId;
+        console.log(accountId);
+        try {
+            const user = await UserModel.findOne({ AccountId: accountId });
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.json(user);
+        } catch (error) {
+            console.error('Error fetching user:', error);
+            res.status(500).json({ message: error.message });
+    };
 };
 // update user
-exports.updateUser = async (req, res) => {
+exports.updateUserByAccountId = async (req, res) => {
+    const accountId = req.params.accountId;
+    const { name, phone, address } = req.body;
+
     try {
-        const user = await User.findByIdAndUpdate(req.params.id);
-        if (!user) return res.status(404).json({
-            err: 'User not found'
-        });
-        res.status(200).json(user);
-    } catch (err) {
-        res.status(500).json({
-            err: err.message
-        });
+        const user = await UserModel.findOneAndUpdate(
+            { AccountId: accountId },
+            { name, phone, address },
+            { new: true } // Trả về tài liệu đã cập nhật
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
-exports.deleteUser = async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) return res.status(404).json({
-            err: "User not found"
-        });
-        res.status(200).json({
-            message: 'User deleted successfully'
-        });
-    } catch (err) {
-        res.status(500).json({
-            err: err.message
-        });
-    }
-}
+// exports.deleteUser = async (req, res) => {
+//     try {
+//         const user = await UserModel.findByIdAndDelete(req.params.id);
+//         if (!user) return res.status(404).json({
+//             err: "User not found"
+//         });
+//         res.status(200).json({
+//             message: 'User deleted successfully'
+//         });
+//     } catch (err) {
+//         res.status(500).json({
+//             err: err.message
+//         });
+//     }
+// }
