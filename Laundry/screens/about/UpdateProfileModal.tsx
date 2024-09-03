@@ -6,25 +6,21 @@ import { useAuth } from '../authentication/AuthContext'; // Đường dẫn tớ
 interface User {
   name: string;
   phone: string;
-  address: {
-    city: string;
-    district: string;
-    borough: string;
-    detailAddress: string;
-  };
+  city: string;
+  district: string;
+  commune: string;
+  detailAddress: string;
 }
 
-const UpdateProfileModal: React.FC<{ visible: boolean, onClose: () => void }> = ({ visible, onClose }) => {
+const UpdateProfileModal: React.FC<{ visible: boolean, onClose: () => void, onUpdate: () => void }> = ({ visible, onClose, onUpdate }) => {
   const { accountId } = useAuth(); // Lấy accountId từ context
   const [formData, setFormData] = useState<User>({
     name: '',
     phone: '',
-    address: {
-      city: '',
-      district: '',
-      borough: '',
-      detailAddress: ''
-    }
+    city: '',
+    district: '',
+    commune: '',
+    detailAddress: ''
   });
 
   useEffect(() => {
@@ -57,6 +53,7 @@ const UpdateProfileModal: React.FC<{ visible: boolean, onClose: () => void }> = 
     try {
       await axios.put(`http://192.168.1.67:3000/api/user/${accountId}`, formData);
       Alert.alert('Success', 'Profile updated successfully');
+      onUpdate();
       onClose(); // Đóng modal sau khi cập nhật thành công
     } catch (error) {
       Alert.alert('Error', 'Failed to update profile');
@@ -88,30 +85,34 @@ const UpdateProfileModal: React.FC<{ visible: boolean, onClose: () => void }> = 
           />
           <TextInput
             placeholder="City"
-            value={formData.address?.city} // Optional chaining
-            onChangeText={(text) => handleChange('address.city', text)}
+            value={formData.city} // Optional chaining
+            onChangeText={(text) => handleChange('city', text)}
             style={styles.input}
           />
           <TextInput
             placeholder="District"
-            value={formData.address?.district} // Optional chaining
-            onChangeText={(text) => handleChange('address.district', text)}
+            value={formData.district} // Optional chaining
+            onChangeText={(text) => handleChange('district', text)}
             style={styles.input}
           />
           <TextInput
-            placeholder="Borough"
-            value={formData.address?.borough} // Optional chaining
-            onChangeText={(text) => handleChange('address.borough', text)}
+            placeholder="Commune"
+            value={formData.commune} // Optional chaining
+            onChangeText={(text) => handleChange('commune', text)}
             style={styles.input}
           />
           <TextInput
             placeholder="Detail Address"
-            value={formData.address?.detailAddress} // Optional chaining
-            onChangeText={(text) => handleChange('address.detailAddress', text)}
+            value={formData.detailAddress} // Optional chaining
+            onChangeText={(text) => handleChange('detailAddress', text)}
             style={styles.input}
           />
-          <Button title="Save" onPress={handleSave} />
-          <Button title="Cancel" onPress={onClose} color="red" />
+          <View style={{ marginBottom: 10 }}>
+            <Button title="Save" onPress={handleSave}  />
+          </View>
+          <View>
+            <Button title="Cancel" onPress={onClose} color="red" />
+          </View>
         </View>
       </View>
     </Modal>

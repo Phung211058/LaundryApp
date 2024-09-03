@@ -9,13 +9,11 @@ import UpdateProfileModal from './UpdateProfileModal';
 
 interface User {
   name: string;
-  phoneNumber: string;
-  address: {
-    city: string;
-    district: string;
-    borough: string;
-    detailAddress: string;
-  };
+  phone: string;
+  city: string;
+  district: string;
+  commune: string;
+  detailAddress: string;
 }
 
 const ProfileScreen: React.FC = ({ route }: any) => {
@@ -23,22 +21,20 @@ const ProfileScreen: React.FC = ({ route }: any) => {
   const [user, setUser] = useState<User | null>(null);
   const [modalVisible, setModalVisible] = useState(false); // Trạng thái để điều khiển modal
   // const accountId = route.params?.accountId; // Lấy accountId từ params
-  console.log("Hello")
   const { accountId } = useAuth();
-  console.log(accountId);
   if (accountId === null || accountId === 'null') {
     console.log("Invalid accountId");
     return; // Không thực hiện fetch khi accountId không hợp lệ
   }
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`http://192.168.1.67:3000/api/user/${accountId}`);
+      setUser(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user data', error);
+    }
+  };
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`http://192.168.1.67:3000/api/user/${accountId}`);
-        setUser(response.data);
-      } catch (error) {
-        console.error('Failed to fetch user data', error);
-      }
-    };
     fetchUserData();
   }, [accountId]);
 
@@ -56,28 +52,28 @@ const ProfileScreen: React.FC = ({ route }: any) => {
       <View style={{ marginBottom: 10 }}>
         <Text style={{ fontSize: 20, marginLeft: 15, marginBottom: 5 }}>Phone Number</Text>
         <View style={{ backgroundColor: "#ebebf2", padding: 10, borderRadius: 20, elevation: 2 }}>
-          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.phoneNumber || "No data"}</Text>
+          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.phone || "No data"}</Text>
         </View>
       </View>
 
       <View style={{ marginBottom: 10 }}>
         <Text style={{ fontSize: 20, marginLeft: 15, marginBottom: 5 }}>City</Text>
         <View style={{ backgroundColor: "#ebebf2", padding: 10, borderRadius: 20, elevation: 2 }}>
-          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.address?.city || "No data"}</Text>
+          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.city || "No data"}</Text>
         </View>
       </View>
 
       <View style={{ marginBottom: 10 }}>
-        <Text style={{ fontSize: 20, marginLeft: 15, marginBottom: 5 }}>Borough</Text>
+        <Text style={{ fontSize: 20, marginLeft: 15, marginBottom: 5 }}>Commune</Text>
         <View style={{ backgroundColor: "#ebebf2", padding: 10, borderRadius: 20, elevation: 2 }}>
-          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.address?.borough || "No data"}</Text>
+          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.commune || "No data"}</Text>
         </View>
       </View>
 
       <View style={{ marginBottom: 10 }}>
         <Text style={{ fontSize: 20, marginLeft: 15, marginBottom: 5 }}>Detail Address</Text>
         <View style={{ backgroundColor: "#ebebf2", padding: 10, borderRadius: 20, elevation: 2 }}>
-          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.address?.detailAddress || "No data"}</Text>
+          <Text style={{ fontSize: 18, paddingLeft: 15 }}>{user?.detailAddress || "No data"}</Text>
         </View>
       </View>
 
@@ -97,7 +93,7 @@ const ProfileScreen: React.FC = ({ route }: any) => {
         }}>Edit Profile</Text>
       </Pressable>
       <Pressable>
-        <UpdateProfileModal visible={modalVisible} onClose={handleCloseModal} />
+        <UpdateProfileModal visible={modalVisible} onClose={handleCloseModal} onUpdate={fetchUserData}/>
         <Text>Update</Text>
       </Pressable>
     </View>

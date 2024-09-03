@@ -118,20 +118,18 @@ exports.getUserByAccountId = async (req, res) => {
 // update user
 exports.updateUserByAccountId = async (req, res) => {
     const accountId = req.params.accountId;
-    const { name, phone, address } = req.body;
-
+    const { name, phone, city, district, commune, detailAddress } = req.body;
     try {
         const user = await UserModel.findOneAndUpdate(
             { AccountId: accountId },
-            { name, phone, address },
+            { name, phone, city, district, commune, detailAddress },
             { new: true } // Trả về tài liệu đã cập nhật
         );
-
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         res.json(user);
+        console.log(user);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
