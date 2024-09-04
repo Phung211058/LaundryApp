@@ -1,16 +1,45 @@
 import { View, Text, Pressable, TextInput, StyleSheet, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '../authentication/AuthContext'; // Đường dẫn đến file AuthContext
 import { useRoute, RouteProp, NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/types'; // Import kiểu
 
+interface User {
+  name: string;
+  phone: string;
+  city: string;
+  district: string;
+  commune: string;
+  detailAddress: string;
+  date: Date;
+}
 
 type AddressScreenRouteProp = RouteProp<RootStackParamList, 'Address'>;
 
 const AddressScreen: React.FC = () => {
   const route = useRoute<AddressScreenRouteProp>();
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
+  
+  const [user, setUser] = useState<User | null>(null);
+  const { accountId } = useAuth();
+  if (accountId === null || accountId === 'null') {
+    console.log("Invalid accountId");
+    return; // Không thực hiện fetch khi accountId không hợp lệ
+  }
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`http://192.168.1.67:3000/api/user/${accountId}`);
+      setUser(response.data);
+    } catch (error) {
+      console.error('Failed to fetch user data', error);
+    }
+  };
+  useEffect(() => {
+    fetchUserData();
+  }, [accountId]);
   const { selectedCategory, selectedFlavour, selectedTime, selectedBusiness, selectedService, selectedWeight } = route.params;
   const [isCurrentAddressVisible, setIsCurrentAddressVisible] = useState(false);
   const [isAnotherAddressVisible, setIsAnotherAddressVisible] = useState(false);
@@ -77,10 +106,10 @@ const AddressScreen: React.FC = () => {
           </Pressable>
           {isCurrentAddressVisible && (
             <View style={{ marginTop: 10 }}>
-              <Text>123 Main Street,</Text>
-              <Text>Suite 400,</Text>
-              <Text>Hometown,</Text>
-              <Text>Country</Text>
+              <Text>City: {user?.city}</Text>
+              <Text>District: {user?.district}</Text>
+              <Text>Commune: {user?.commune}</Text>
+              <Text>Detail Address: {user?.detailAddress}</Text>
             </View>
           )}
           {/* Another address */}

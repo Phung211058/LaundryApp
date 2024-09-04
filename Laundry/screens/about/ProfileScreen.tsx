@@ -86,6 +86,7 @@ const ProfileScreen: React.FC = ({ route }: any) => {
         backgroundColor: '#007bff',
         borderRadius: 5,
         alignItems: 'center',
+        marginHorizontal: 60,
       }}>
         <Text style={{
           color: '#fff',
@@ -94,7 +95,6 @@ const ProfileScreen: React.FC = ({ route }: any) => {
       </Pressable>
       <Pressable>
         <UpdateProfileModal visible={modalVisible} onClose={handleCloseModal} onUpdate={fetchUserData}/>
-        <Text>Update</Text>
       </Pressable>
     </View>
   )

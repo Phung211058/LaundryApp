@@ -57,32 +57,32 @@ const HomeScreen: React.FC = () => {
   ];
   const services = [
     {
-      id: 1, name: "Wet Cleaning",
+      id: 1, name: "Wet Cleaning", price: 1.5,
       icon: <MaterialIcons name="water-drop" size={36} color="white" />,
       backgroundColor: "skyblue", navigate: "Wet"
     },
     {
-      id: 2, name: "Dry Cleaning",
+      id: 2, name: "Dry Cleaning", price: 2,
       icon: <MaterialCommunityIcons name="water-off-outline" size={36} color="skyblue" />,
       backgroundColor: "ghostwhite", navigate: "Dry"
     },
     {
-      id: 3, name: "Lengerie",
+      id: 3, name: "Lengerie", price: 2,
       icon: <Fontisto name="swimsuit" size={36} color="darkorchid" />,
       backgroundColor: "powderblue", navigate: "Lengerie"
     },
     {
-      id: 4, name: "Soft Furniture",
+      id: 4, name: "Soft Furniture", price: 3,
       icon: <MaterialCommunityIcons name="sofa-single" size={36} color="brown" />,
       backgroundColor: "powderblue", navigate: "SoftFurniture"
     },
     {
-      id: 5, name: "Stain Removal",
+      id: 5, name: "Stain Removal", price: 4,
       icon: <FontAwesome5 name="eraser" size={36} color="lavender" />,
       backgroundColor: "skyblue", navigate: "StainRemoval"
     },
     {
-      id: 6, name: "Odor Treatment",
+      id: 6, name: "Odor Treatment", price: 3,
       icon: <MaterialCommunityIcons name="flower-pollen" size={36} color="orangered" />,
       backgroundColor: "powderblue", navigate: "OdorTreatment"
     },
@@ -132,7 +132,7 @@ const HomeScreen: React.FC = () => {
             {services.map((service) => (
               <View key={service.id} style={{ flexDirection: "column", alignItems: 'center', marginHorizontal: 7, marginBottom: 15, width: "27%" }}>
                 <Pressable style={{ borderWidth: 0.5, borderRadius: 50, backgroundColor: service.backgroundColor, padding: 7, marginBottom: 10, }}
-                  onPress={() => navigation.navigate("Service", { selectedService: service.name })}>
+                  onPress={() => navigation.navigate("Service", { selectedService: service.name, servicePrice: service.price })}>
                   {service.icon}
                 </Pressable>
                 <View>
@@ -149,7 +149,7 @@ const HomeScreen: React.FC = () => {
             {businessEstablishments.map((establishment) => (
               <View key={establishment.id} style={{ flexDirection: "column", alignItems: 'center', marginHorizontal: 7, width: "25%", marginBottom: 15 }}>
                 <Pressable style={{ borderWidth: 0.5, borderRadius: 50, backgroundColor: establishment.backgroundColor, padding: 12, marginBottom: 10, }}
-                  onPress={() => navigation.navigate("Business", { selectedBusiness: establishment.name })}
+                  onPress={() => navigation.navigate("Business", { selectedBusiness: establishment.name, businessPrice: establishment.price })}
                 >
                   {establishment.icon}
                 </Pressable>

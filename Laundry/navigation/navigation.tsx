@@ -114,6 +114,7 @@ const AppNavigation: React.FC = () => {
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Service" component={ServiceScreen} />
         <Stack.Screen name="Business" component={BusinessScreen} />
+        <Stack.Screen name="Address" component={AddressScreen} />
 
         {/* Màn hình có BottomTabNavigator */}
         <Stack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />

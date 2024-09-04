@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable, TouchableOpacity, Platform, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/types';
@@ -10,36 +10,38 @@ type ServiceScreenRouteProp = RouteProp<RootStackParamList, 'Service'>;
 const ServiceScreen: React.FC = () => {
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
   const route = useRoute<ServiceScreenRouteProp>();
-  const {selectedService} = route.params;
+  const { selectedService, servicePrice } = route.params;
+  // console.log("servicePrice: " +servicePrice);
   const weight = [
-    { id: 1, weight: "1 - 5kg" },
-    { id: 2, weight: "5 - 10kg" },
-    { id: 3, weight: "10 - 15kg" },
-    { id: 4, weight: "over 15kg" },
+    { id: 1, weight: "1 - 5kg", price: 1, },
+    { id: 2, weight: "5 - 10kg", price: 2 },
+    { id: 3, weight: "10 - 15kg", price: 3 },
+    { id: 4, weight: "over 15kg", price: 4 },
   ];
   const [selectedWeightOption, setSelectedWeightOption] = useState<string | null>(null);
+
   // Hàm xử lý khi chọn wight
-  const handleWeightSelect = (weight: string) => {
-    setSelectedWeightOption(weight);
-  };
+  // const handleWeightSelect = (weight: string) => {
+  //   setSelectedWeightOption(weight);
+  // };
   const flavour = [
-    { id: 1, name: "No flavour ", price: 1 }, //oải hương
-    { id: 2, name: "Lavender ", price: 3 }, //oải hương
-    { id: 3, name: "Citrus ", price: 3 }, // hương cam, chanh
-    { id: 4, name: "Fresh Linen", price: 3 }, // hương vải
-    { id: 5, name: "Ocean Breeze", price: 2 }, // gió biển
-    { id: 6, name: "Vanilla", price: 3 }, // hương vani
-    { id: 7, name: "Rose", price: 2 }, // hoa hổng
-    { id: 8, name: "Eucalyptus", price: 2 }, // khuynh diệp
-    { id: 9, name: "Pine", price: 2 }, // cây thông
-    { id: 10, name: "Cotton", price: 2 }, // cotton
-    { id: 11, name: "Spice", price: 2 }, // gia vị
+    { id: 1, name: "No flavour ", price: 0 }, //oải hương 1
+    { id: 2, name: "Lavender ", price: 3 }, //oải hương 3
+    { id: 3, name: "Citrus ", price: 3 }, // hương cam, chanh 3
+    { id: 4, name: "Fresh Linen", price: 3 }, // hương vải 3
+    { id: 5, name: "Ocean Breeze", price: 2 }, // gió biển 2
+    { id: 6, name: "Vanilla", price: 3 }, // hương vani 3
+    { id: 7, name: "Rose", price: 2 }, // hoa hổng 2
+    { id: 8, name: "Eucalyptus", price: 2 }, // khuynh diệp 2
+    { id: 9, name: "Pine", price: 2 }, // cây thông 2
+    { id: 10, name: "Cotton", price: 2 }, // cotton 2
+    { id: 11, name: "Spice", price: 2 }, // gia vị 2
   ];
   const [selectedFlavourOption, setSelectedFlavourOption] = useState<string | null>(null);
   // Hàm xử lý khi chọn flavour
-  const handleFlavourSelect = (flavour: string) => {
-    setSelectedFlavourOption(flavour);
-  };
+  // const handleFlavourSelect = (flavour: string) => {
+  //   setSelectedFlavourOption(flavour);
+  // };
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
   // Hàm để hiển thị DatePicker
@@ -56,6 +58,29 @@ const ServiceScreen: React.FC = () => {
   const formatDate = (date: Date) => {
     return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
   };
+  // total price
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [weightPrice, setWeightPrice] = useState<number>(0);
+  const [flavourPrice, setFlavourPrice] = useState<number>(0);
+
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      const newTotalPrice = servicePrice + weightPrice + flavourPrice;
+      setTotalPrice(newTotalPrice);
+      // console.log("weightPrice: " + weightPrice + "; flavourPrice: " + flavourPrice + "; servicePrice: " + servicePrice + "; totalPrice: " + newTotalPrice);
+    };
+    calculateTotalPrice();
+  }, [servicePrice, weightPrice, flavourPrice]);
+
+  const selectWeight = (weight: { id: number, weight: string, price: number }) => {
+    setSelectedWeightOption(weight.weight);
+    setWeightPrice(weight.price);
+  };
+
+  const selectFlavour = (flavour: { id: number, name: string, price: number }) => {
+    setSelectedFlavourOption(flavour.name);
+    setFlavourPrice(flavour.price);
+  };
   // Kiểm tra xem đã chọn đủ weight, flavour và time chưa
   const isButtonVisible = selectedWeightOption && selectedFlavourOption && date;
   return (
@@ -69,7 +94,7 @@ const ServiceScreen: React.FC = () => {
               styles.optionWeight,
               selectedWeightOption === weight.weight && styles.selectedWeightOption
             ]}
-              onPress={() => setSelectedWeightOption(weight.weight)}
+              onPress={() => selectWeight(weight)}
             >
               <Text style={styles.text}>{weight.weight}</Text>
             </Pressable>
@@ -83,7 +108,7 @@ const ServiceScreen: React.FC = () => {
               styles.optionFlavour,
               selectedFlavourOption === option.name && styles.selectedFlavourOption
             ]}
-              onPress={() => setSelectedFlavourOption(option.name)}
+              onPress={() => selectFlavour(option)}
             >
               <Text style={styles.text}>{option.name}</Text>
             </Pressable>
@@ -119,10 +144,11 @@ const ServiceScreen: React.FC = () => {
               <Text style={{ color: "white", fontSize: 16 }}>Weight: {selectedWeightOption}</Text>
               <Text style={{ color: "white", fontSize: 16 }}>Flavour: {selectedFlavourOption}</Text>
               <Text style={{ color: "white", fontSize: 16 }}>Time: {formatDate(date)}</Text>
+              <Text style={{ color: "white", fontSize: 16 }}>Total Price: {totalPrice}</Text>
             </View>
             <Pressable onPress={() => navigation.navigate("Address", {
               selectedWeight: selectedWeightOption,
-              selectedFlavour: selectedFlavourOption, selectedTime: formatDate(date), 
+              selectedFlavour: selectedFlavourOption, selectedTime: formatDate(date),
               selectedService: selectedService,
             })}>
               <Text style={{ fontSize: 18, fontWeight: "600", color: "white", marginTop: 10 }}>Proceed to pick up</Text>

@@ -4,8 +4,8 @@ export type RootStackParamList = {
     Register: undefined;
     Home: undefined;
     Start: undefined;
-    Service: {selectedService: string}; 
-    Business: { selectedBusiness: string };
+    Service: {selectedService: string, servicePrice: number, }; 
+    Business: { selectedBusiness: string, businessPrice: number};
     Address: {selectedCategory?: string; selectedWeight?: string; selectedFlavour: string; 
         selectedTime: string; selectedBusiness?: string, selectedService?: string};
     Finish: {selectedCategory?: string; selectedWeight?: string; selectedFlavour: string; 
