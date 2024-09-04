@@ -1,4 +1,4 @@
-import { View, Text, Pressable, TextInput, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, Pressable, TextInput, StyleSheet, ScrollView, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -22,8 +22,7 @@ type AddressScreenRouteProp = RouteProp<RootStackParamList, 'Address'>;
 const AddressScreen: React.FC = () => {
   const route = useRoute<AddressScreenRouteProp>();
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
-  
-  const [user, setUser] = useState<User | null>(null);
+
   const { accountId } = useAuth();
   if (accountId === null || accountId === 'null') {
     console.log("Invalid accountId");
@@ -40,7 +39,7 @@ const AddressScreen: React.FC = () => {
   useEffect(() => {
     fetchUserData();
   }, [accountId]);
-  const { selectedCategory, selectedFlavour, selectedTime, selectedBusiness, selectedService, selectedWeight } = route.params;
+  const { selectedCategory, selectedFlavour, selectedTime, selectedBusiness, selectedService, selectedWeight, totalPrice } = route.params;
   const [isCurrentAddressVisible, setIsCurrentAddressVisible] = useState(false);
   const [isAnotherAddressVisible, setIsAnotherAddressVisible] = useState(false);
   // xử lý hiển thị khi nhấn current address
@@ -71,6 +70,36 @@ const AddressScreen: React.FC = () => {
   };
   // điều kiện hiển thị button complete
   const shouldShowCompleteButton = isCurrentAddressVisible || (isAnotherAddressVisible && isFormComplete());
+  const [user, setUser] = useState<User | null>(null);
+  const handleCreateOrder = async () => {
+    try {
+      const orderData = {
+        accountId: accountId,
+        name: user?.name,
+        phone: user?.phone,
+        city: user?.city,
+        district: user?.district,
+        commune: user?.commune,
+        selectedType: selectedService,
+        detailAddress: user?.detailAddress,
+        selectedCategory: selectedCategory,
+        selectedWeight: selectedWeight,
+        selectedFlavour: selectedFlavour,
+        selectedTime: selectedTime,
+        totalPrice: totalPrice,
+        orderDate: new Date(), // Ngày đặt hàng
+      };
+      console.log(orderData)
+      const response = await axios.post(`http://192.168.1.67:3000/api/createOrder`, orderData);
+      if (response.status === 200) {
+        console.log('Order created successfully:', response.data);
+      }
+    } catch (error) {
+      // console.error('Error logging in:', error);
+      const axiosError = error as { response?: { data?: { message?: string } } };
+      Alert.alert('Error', axiosError.response?.data?.message || 'An unknown error occurred');
+    }
+  };
 
   return (
     <ScrollView>
@@ -78,11 +107,14 @@ const AddressScreen: React.FC = () => {
         backgroundColor: "#088F6F", padding: 10, margin: 15, borderRadius: 10, alignItems: "center",
       }}>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-        {selectedBusiness ? <Text style={{ color: "white", fontSize: 16 }}>Category: {selectedCategory}</Text> : null}
-        {selectedService ? <Text style={{ color: "white", fontSize: 16 }}>Weight: {selectedWeight}</Text> : null}
+          {selectedBusiness ? <Text style={{ color: "white", fontSize: 16 }}>Category: {selectedCategory}</Text> : null}
+          {selectedService ? <Text style={{ color: "white", fontSize: 16 }}>Weight: {selectedWeight}</Text> : null}
           {/* <Text style={{ color: "white", fontSize: 16 }}>Category: {selectedCategory || "Chưa chọn"}</Text> */}
           <Text style={{ color: "white", fontSize: 16 }}>Flavour: {selectedFlavour || "Chưa chọn"}</Text>
           <Text style={{ color: "white", fontSize: 16 }}>Time: {selectedTime}</Text>
+          {!totalPrice ? (null) : (
+            <Text style={{ color: "white", fontSize: 16 }}>Total Price: {totalPrice}</Text>
+          )}
         </View>
         {/* <View>
           <Text style={{ fontSize: 18, fontWeight: "600", color: "white", marginTop: 10 }}>Proceed to pick up</Text>
@@ -97,10 +129,8 @@ const AddressScreen: React.FC = () => {
           ]}>
             <Text style={{ fontSize: 18 }}>Your current address</Text>
             {!isCurrentAddressVisible ? (
-              // Thực hiện khi điều kiện đúng
               <AntDesign name="circledowno" size={24} color="black" />
             ) : (
-              // Thực hiện khi điều kiện sai
               <AntDesign name="upcircleo" size={24} color="black" />
             )}
           </Pressable>
@@ -144,7 +174,7 @@ const AddressScreen: React.FC = () => {
           )}
         </View>
         {shouldShowCompleteButton && (
-          <Pressable onPress={() => navigation.navigate("Home") } style={{ padding: 10, backgroundColor: 'green', marginHorizontal: 75, marginVertical: 15, borderRadius: 20 }}>
+          <Pressable onPress={handleCreateOrder} style={{ padding: 10, backgroundColor: 'green', marginHorizontal: 75, marginVertical: 15, borderRadius: 20 }}>
             <Text style={{ fontSize: 18, color: 'white', textAlign: "center" }}>Hoàn thành</Text>
           </Pressable>
         )}

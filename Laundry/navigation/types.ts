@@ -7,7 +7,7 @@ export type RootStackParamList = {
     Service: {selectedService: string, servicePrice: number, }; 
     Business: { selectedBusiness: string, businessPrice: number};
     Address: {selectedCategory?: string; selectedWeight?: string; selectedFlavour: string; 
-        selectedTime: string; selectedBusiness?: string, selectedService?: string};
+        selectedTime: string; selectedBusiness?: string, selectedService?: string, totalPrice?: number,};
     Finish: {selectedCategory?: string; selectedWeight?: string; selectedFlavour: string; 
         selectedTime: string; selectedBusiness?: string, selectedService?: string, address: object};
     AppTabs: undefined;

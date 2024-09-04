@@ -87,7 +87,7 @@ const ServiceScreen: React.FC = () => {
     <ScrollView>
       <View style={styles.container}>
         {/* Weight */}
-        <Text style={{ fontSize: 20, marginHorizontal: 10, marginVertical: 5 }}>Cateogry</Text>
+        <Text style={{ fontSize: 20, marginHorizontal: 10, marginVertical: 5 }}>Weight</Text>
         <View style={{ backgroundColor: "white", flexDirection: "row", borderRadius: 10, alignItems: "center", padding: 8 }}>
           {weight.map((weight) => (
             <Pressable key={weight.id} style={[
@@ -150,6 +150,7 @@ const ServiceScreen: React.FC = () => {
               selectedWeight: selectedWeightOption,
               selectedFlavour: selectedFlavourOption, selectedTime: formatDate(date),
               selectedService: selectedService,
+              totalPrice: totalPrice
             })}>
               <Text style={{ fontSize: 18, fontWeight: "600", color: "white", marginTop: 10 }}>Proceed to pick up</Text>
             </Pressable>
