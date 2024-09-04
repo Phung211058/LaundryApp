@@ -132,7 +132,7 @@ const HomeScreen: React.FC = () => {
             {services.map((service) => (
               <View key={service.id} style={{ flexDirection: "column", alignItems: 'center', marginHorizontal: 7, marginBottom: 15, width: "27%" }}>
                 <Pressable style={{ borderWidth: 0.5, borderRadius: 50, backgroundColor: service.backgroundColor, padding: 7, marginBottom: 10, }}
-                  onPress={() => navigation.navigate("Service", { selectedService: service.name, servicePrice: service.price })}>
+                  onPress={() => navigation.navigate("Service", {selectedType: "Service", selectedService: service.name, servicePrice: service.price })}>
                   {service.icon}
                 </Pressable>
                 <View>
@@ -149,7 +149,7 @@ const HomeScreen: React.FC = () => {
             {businessEstablishments.map((establishment) => (
               <View key={establishment.id} style={{ flexDirection: "column", alignItems: 'center', marginHorizontal: 7, width: "25%", marginBottom: 15 }}>
                 <Pressable style={{ borderWidth: 0.5, borderRadius: 50, backgroundColor: establishment.backgroundColor, padding: 12, marginBottom: 10, }}
-                  onPress={() => navigation.navigate("Business", { selectedBusiness: establishment.name, businessPrice: establishment.price })}
+                  onPress={() => navigation.navigate("Business", {selectedType: "Business" , selectedBusiness: establishment.name, businessPrice: establishment.price })}
                 >
                   {establishment.icon}
                 </Pressable>

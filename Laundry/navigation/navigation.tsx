@@ -2,17 +2,17 @@ import React from 'react'
 import { Pressable, Text, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { AuthProvider } from '../screens/authentication/AuthContext'; // Đường dẫn đến file AuthContext
+import { AuthProvider } from '../screens/authentication/AuthContext';
+import { Ionicons, Feather, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import StartScreen from '../screens/StartScreen';
-import { RootStackParamList } from './/types';
 import BusinessScreen from '../screens/business/BusinessScreen';
 import ServiceScreen from '../screens/services/ServiceScreen';
 import AddressScreen from '../screens/address/AddressScreen';
 import LoginScreen from '../screens/authentication/LoginScreen';
 import RegisterScreen from '../screens/authentication/RegisterScreen';
-import { Ionicons, Feather, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import ProfileScreen from '../screens/about/ProfileScreen';
+import OrderFinishScreen from '../screens/order/OrderFinishScreen';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -100,26 +100,27 @@ const Stack = createNativeStackNavigator();
 
 const AppNavigation: React.FC = () => {
   return (
-    <AuthProvider>
-      <Stack.Navigator
-        initialRouteName='Login'
-        screenOptions={{
-          headerStyle: { backgroundColor: 'skyblue' },
-          headerTitleStyle: { fontWeight: 'bold', fontSize: 20, color: '#fff' },
-        }}
-      >
-        {/* Màn hình không có BottomTabNavigator */}
-        <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Service" component={ServiceScreen} />
-        <Stack.Screen name="Business" component={BusinessScreen} />
-        <Stack.Screen name="Address" component={AddressScreen} />
+      <AuthProvider>
+        <Stack.Navigator
+          initialRouteName='Login'
+          screenOptions={{
+            headerStyle: { backgroundColor: 'skyblue' },
+            headerTitleStyle: { fontWeight: 'bold', fontSize: 20, color: '#fff' },
+          }}
+        >
+          {/* Màn hình không có BottomTabNavigator */}
+          <Stack.Screen name="Start" component={StartScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Service" component={ServiceScreen} />
+          <Stack.Screen name="Business" component={BusinessScreen} />
+          <Stack.Screen name="Address" component={AddressScreen} />
+          <Stack.Screen name="OrderFinish" component={OrderFinishScreen} />
 
-        {/* Màn hình có BottomTabNavigator */}
-        <Stack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </AuthProvider>
+          {/* Màn hình có BottomTabNavigator */}
+          <Stack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </AuthProvider>
   );
 };
 

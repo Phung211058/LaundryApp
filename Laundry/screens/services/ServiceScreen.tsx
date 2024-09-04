@@ -147,6 +147,7 @@ const ServiceScreen: React.FC = () => {
               <Text style={{ color: "white", fontSize: 16 }}>Total Price: {totalPrice}</Text>
             </View>
             <Pressable onPress={() => navigation.navigate("Address", {
+              selectedType: "Service",
               selectedWeight: selectedWeightOption,
               selectedFlavour: selectedFlavourOption, selectedTime: formatDate(date),
               selectedService: selectedService,

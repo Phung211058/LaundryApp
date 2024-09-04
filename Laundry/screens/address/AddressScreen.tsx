@@ -22,7 +22,6 @@ type AddressScreenRouteProp = RouteProp<RootStackParamList, 'Address'>;
 const AddressScreen: React.FC = () => {
   const route = useRoute<AddressScreenRouteProp>();
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
-
   const { accountId } = useAuth();
   if (accountId === null || accountId === 'null') {
     console.log("Invalid accountId");
@@ -39,7 +38,7 @@ const AddressScreen: React.FC = () => {
   useEffect(() => {
     fetchUserData();
   }, [accountId]);
-  const { selectedCategory, selectedFlavour, selectedTime, selectedBusiness, selectedService, selectedWeight, totalPrice } = route.params;
+  const {selectedType, selectedCategory, selectedFlavour, selectedTime, selectedBusiness, selectedService, selectedWeight, totalPrice } = route.params;
   const [isCurrentAddressVisible, setIsCurrentAddressVisible] = useState(false);
   const [isAnotherAddressVisible, setIsAnotherAddressVisible] = useState(false);
   // xử lý hiển thị khi nhấn current address
@@ -70,8 +69,12 @@ const AddressScreen: React.FC = () => {
   };
   // điều kiện hiển thị button complete
   const shouldShowCompleteButton = isCurrentAddressVisible || (isAnotherAddressVisible && isFormComplete());
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>();
   const handleCreateOrder = async () => {
+    if (!user?.name || !user?.phone || !user?.city || !user?.district || !user?.commune || !user?.detailAddress) {
+    Alert.alert('Error', 'Please ensure all fields are filled out correctly.');
+    return;
+  }
     try {
       const orderData = {
         accountId: accountId,
@@ -80,19 +83,26 @@ const AddressScreen: React.FC = () => {
         city: user?.city,
         district: user?.district,
         commune: user?.commune,
-        selectedType: selectedService,
         detailAddress: user?.detailAddress,
+        selectedType: selectedService,
         selectedCategory: selectedCategory,
         selectedWeight: selectedWeight,
         selectedFlavour: selectedFlavour,
         selectedTime: selectedTime,
         totalPrice: totalPrice,
-        orderDate: new Date(), // Ngày đặt hàng
+        selectedBusiness: selectedBusiness,
+        selectedService: selectedService,
+        orderDate: new Date(), 
       };
       console.log(orderData)
       const response = await axios.post(`http://192.168.1.67:3000/api/createOrder`, orderData);
       if (response.status === 200) {
-        console.log('Order created successfully:', response.data);
+        navigation.navigate("OrderFinish", {
+          name: user?.name, phone: user?.phone, city: user?.city, district: user?.district, commune: user?.commune, detailAddress: user?.detailAddress,
+          selectedType: selectedType, selectedBusiness: selectedBusiness, selectedService: selectedService,
+          selectedCategory: selectedCategory, selectedWeight: selectedWeight, selectedFlavour: selectedFlavour, selectedTime: selectedTime,
+          totalPrice: totalPrice
+        })
       }
     } catch (error) {
       // console.error('Error logging in:', error);
@@ -109,16 +119,12 @@ const AddressScreen: React.FC = () => {
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           {selectedBusiness ? <Text style={{ color: "white", fontSize: 16 }}>Category: {selectedCategory}</Text> : null}
           {selectedService ? <Text style={{ color: "white", fontSize: 16 }}>Weight: {selectedWeight}</Text> : null}
-          {/* <Text style={{ color: "white", fontSize: 16 }}>Category: {selectedCategory || "Chưa chọn"}</Text> */}
           <Text style={{ color: "white", fontSize: 16 }}>Flavour: {selectedFlavour || "Chưa chọn"}</Text>
           <Text style={{ color: "white", fontSize: 16 }}>Time: {selectedTime}</Text>
           {!totalPrice ? (null) : (
             <Text style={{ color: "white", fontSize: 16 }}>Total Price: {totalPrice}</Text>
           )}
         </View>
-        {/* <View>
-          <Text style={{ fontSize: 18, fontWeight: "600", color: "white", marginTop: 10 }}>Proceed to pick up</Text>
-        </View> */}
       </View>
       <View>
         <Text style={{ fontSize: 20, marginHorizontal: 10, marginVertical: 5, }}>Address</Text>

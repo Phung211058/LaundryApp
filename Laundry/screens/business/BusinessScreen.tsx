@@ -123,6 +123,7 @@ const BusinessScreen: React.FC = () => {
               <Text style={{ color: "white", fontSize: 16 }}>Time: {formatDate(date)}</Text>
             </View>
             <Pressable onPress={() => navigation.navigate("Address", {
+              selectedType: "Business",
               selectedCategory: selectedCategoryOption,
               selectedFlavour: selectedFlavourOption, selectedTime: formatDate(date), 
               selectedBusiness: selectedBusiness,
