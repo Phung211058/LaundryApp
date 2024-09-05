@@ -9,6 +9,8 @@ const OrderSchema = new mongoose.Schema({
     commune: { type: String },
     detailAddress: { type: String }, 
     selectedType: { type: String },
+    selectedService: { type: String },
+    selectedBusiness: { type: String },
     selectedCategory: { type: String }, 
     selectedWeight: { type: String }, 
     selectedFlavour: { type: String },

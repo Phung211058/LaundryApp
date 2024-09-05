@@ -11,6 +11,7 @@ const ServiceScreen: React.FC = () => {
   const navigation: NavigationProp<RootStackParamList> = useNavigation();
   const route = useRoute<ServiceScreenRouteProp>();
   const { selectedService, servicePrice } = route.params;
+  console.log(selectedService);
   // console.log("servicePrice: " +servicePrice);
   const weight = [
     { id: 1, weight: "1 - 5kg", price: 1, },

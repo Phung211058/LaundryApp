@@ -13,6 +13,8 @@ import LoginScreen from '../screens/authentication/LoginScreen';
 import RegisterScreen from '../screens/authentication/RegisterScreen';
 import ProfileScreen from '../screens/about/ProfileScreen';
 import OrderFinishScreen from '../screens/order/OrderFinishScreen';
+import OrderHistory from '../screens/order/OrderHistoryScreen';
+import OrderDetailScreen from '../screens/order/OrderDetailScreen';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -35,7 +37,7 @@ const getIcon = (routeName: string, color: string, size: number) => {
       return <Ionicons name="home" size={32} color={color} />;
     case 'Notification':
       return <Ionicons name="notifications" size={24} color={color} />;
-    case 'Order':
+    case 'Ordered':
       return <FontAwesome5 name="file-invoice-dollar" size={24} color={color} />;
     case 'Message':
       return <AntDesign name="message1" size={24} color={color} />; // Sử dụng Ionicons cho tab Service
@@ -89,7 +91,7 @@ const AppTabs: React.FC = () => (
       },
     })}
   >
-    <BottomTab.Screen name="Order" component={ProfileScreen} />
+    <BottomTab.Screen name="Ordered" component={OrderHistory} />
     <BottomTab.Screen name="Message" component={ProfileScreen} />
     <BottomTab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     <BottomTab.Screen name="Notification" component={ProfileScreen} />
@@ -115,7 +117,8 @@ const AppNavigation: React.FC = () => {
           <Stack.Screen name="Service" component={ServiceScreen} />
           <Stack.Screen name="Business" component={BusinessScreen} />
           <Stack.Screen name="Address" component={AddressScreen} />
-          <Stack.Screen name="OrderFinish" component={OrderFinishScreen} />
+          <Stack.Screen name="OrderFinish" component={OrderFinishScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
 
           {/* Màn hình có BottomTabNavigator */}
           <Stack.Screen name="AppTabs" component={AppTabs} options={{ headerShown: false }} />

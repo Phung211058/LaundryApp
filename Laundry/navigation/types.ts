@@ -26,6 +26,9 @@ export type RootStackParamList = {
         selectedType: string, selectedService?: string, selectedBusiness?: string
         selectedCategory?: string, selectedWeight?: string, selectedFlavour: string, selectedTime: string, totalPrice?: number;
     };
+    OrderDetail: {
+        orderId: string
+    }
     AppTabs: undefined;
 };
 export type AppTabsNavigationProp = BottomTabNavigationProp<BottomTabParamList>;

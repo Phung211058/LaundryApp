@@ -84,7 +84,7 @@ const AddressScreen: React.FC = () => {
         district: user?.district,
         commune: user?.commune,
         detailAddress: user?.detailAddress,
-        selectedType: selectedService,
+        selectedType: selectedType,
         selectedCategory: selectedCategory,
         selectedWeight: selectedWeight,
         selectedFlavour: selectedFlavour,

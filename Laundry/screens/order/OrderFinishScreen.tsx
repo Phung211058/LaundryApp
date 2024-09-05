@@ -18,11 +18,9 @@ const OrderFinishScreen: React.FC = () => {
   const { accountId } = useAuth();
   const { name, phone, city, district, commune, detailAddress,
     selectedType, selectedCategory, selectedWeight, selectedFlavour, selectedTime, selectedService, selectedBusiness, totalPrice } = route.params;
-    const handleNavigateToOrder = () => {
-    };
   return (
     <ScrollView>
-    <View style={{ flex: 1, marginHorizontal: 25 }}>
+    <View style={{ flex: 1, marginHorizontal: 25, marginVertical: 45 }}>
       <Text style={{ fontSize: 24, textAlign: "center", color: "green", marginTop: 15 }}>Order has been placed</Text>
       <View style={{ flexDirection: "row", marginTop: 10 }}>
         <Text style={{ fontSize: 18, color: "gray", alignSelf: "flex-start", marginTop: 4 }}>Name:   </Text>
@@ -80,12 +78,12 @@ const OrderFinishScreen: React.FC = () => {
         <Text style={{ fontSize: 18, color: "gray", alignSelf: "flex-start", marginTop: 6 }}>Total Price:   </Text>
         <Text style={{ fontSize: 27, alignSelf: "flex-start", color: "brown" }}>{totalPrice}$</Text>
       </View>
-        <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingTop: 20 }}>
-          <Pressable style={{ paddingVertical: 8, paddingHorizontal: 40, borderRadius: 20, backgroundColor: "white", borderWidth: 0.5 }}>
+        <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", paddingTop: 20, borderWidth: 0 }}>
+          {/* <Pressable style={{ paddingVertical: 8, paddingHorizontal: 40, borderRadius: 20, backgroundColor: "white", borderWidth: 0.5 }}>
             <Text style={{ fontSize: 24, textAlign: "center" }}>History</Text>
-          </Pressable>
-          <Pressable style={{ paddingVertical: 8, paddingHorizontal: 30, borderRadius: 20, backgroundColor: "black", }}
-           >
+          </Pressable> */}
+          <Pressable style={{ paddingVertical: 8, paddingHorizontal: 80, borderRadius: 30, backgroundColor: "black", }}
+          onPress={() => navigation.navigate("Home")}>
             <Text style={{ fontSize: 24, color: "white"}}>New Order</Text>
           </Pressable>
         </View>

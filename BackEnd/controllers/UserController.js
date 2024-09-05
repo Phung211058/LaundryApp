@@ -162,12 +162,6 @@ exports.updateUserByAccountId = async (req, res) => {
 };
 
 exports.createOrder = async (req, res) => {
-    // const accountId = req.params.accountId;
-    // if (!mongoose.Types.ObjectId.isValid(accountId)) {
-    //     return res.status(400).json({
-    //         message: 'Invalid accountId format',
-    //     });
-    // }
     const {
         accountId,
         name,
@@ -177,6 +171,8 @@ exports.createOrder = async (req, res) => {
         commune,
         detailAddress,
         selectedType,
+        selectedService,
+        selectedBusiness,
         selectedCategory,
         selectedWeight,
         selectedFlavour,
@@ -195,6 +191,8 @@ exports.createOrder = async (req, res) => {
             commune: commune,
             detailAddress: detailAddress,
             selectedType: selectedType,
+            selectedService: selectedService,
+            selectedBusiness: selectedBusiness,
             selectedCategory: selectedCategory,
             selectedWeight: selectedWeight,
             selectedFlavour: selectedFlavour,
@@ -213,3 +211,42 @@ exports.createOrder = async (req, res) => {
         });
     }
 };
+exports.getOrderedByAccountId = async (req, res) => {
+    const { accountId } = req.params;
+    console.log(accountId);
+    try {
+        const order = await OrderModel.find({
+            accountId: accountId
+        });
+        if (!order) {
+            return res.status(404).json({
+                message: 'Orders not found'
+            });
+        }
+        res.json(order);
+    } catch (error) {
+        console.error('Error fetching ordered:', error);
+        res.status(500).json({
+            message: error.message
+        });
+    };
+}
+exports.getOrderDetail = async (req, res) => {
+    const {orderId} = req.params;
+    console.log("order id: "+orderId);
+    try{
+        const order = await OrderModel.findOne({_id: orderId});
+        console.log(order);
+        if(!order) {
+            return res.status(404).json({
+                message: 'Order detail not found'
+            });
+        }
+        res.json(order);
+    } catch(error) {
+        console.error('Error fetching order detail:', error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+}
